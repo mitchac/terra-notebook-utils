@@ -25,7 +25,8 @@ class TestTerraNotebookUtilsTable(SuppressWarningsMixin, unittest.TestCase):
     @testmode("workspace_access")
     def test_table(self):
         table = f"test-table-{uuid4()}"
-        expected_rows = self._gen_rows(997)
+        # expected_rows = self._gen_rows(997)
+        expected_rows = self._gen_rows(9)
 
         with self.subTest("build table"):
             start_time = time.time()
@@ -51,7 +52,7 @@ class TestTerraNotebookUtilsTable(SuppressWarningsMixin, unittest.TestCase):
             self.assertEqual(0, len(fetched_rows))
 
     def _gen_rows(self, number_of_rows: int):
-        def _rand_value(types={str, int, float, bool, list}):
+        def _rand_value(types={str, int, float, bool, list, dict}):
             t = random.choice(list(types))
             if str == t:
                 val = f"{uuid4()}"
@@ -65,6 +66,8 @@ class TestTerraNotebookUtilsTable(SuppressWarningsMixin, unittest.TestCase):
             elif list == t:
                 list_member_type = random.choice(list(types - {list}))
                 val = [_rand_value([list_member_type]) for _ in range(random.randint(1, 4))]
+            elif dict == t:
+                val = dict(foo="a", bar="b")
             return val
 
         all_column_headers = [["foo", "bar", "fubar", "snafu"], ["foo", "bar"], ["bar"]]

@@ -63,6 +63,8 @@ class Writer(_AsyncContextManager):
                 update_ops = list()  # No Firecloud update operations needed for string values
             elif isinstance(val, (int, float, bool)):
                 update_ops = [dict(op="AddUpdateAttribute", attributeName=name, addUpdateAttribute=val)]
+            elif hasattr(val, "items"):  # TODO: Is there a better way to detect dict-like values?
+                update_ops = [dict(op="AddUpdateAttribute", attributeName=name, addUpdateAttribute=val)]
             elif hasattr(val, "__iter__"):
                 update_ops = [dict(op="RemoveAttribute", attributeName=name)]
                 types: Set[type] = set()
@@ -84,7 +86,7 @@ class Writer(_AsyncContextManager):
             self._row_update_request_data[column_headers] = list()
         self._tsvs[column_headers] += (
             os.linesep
-            + row.name + "\t"
+            + str(row.name) + "\t"
             + "\t".join(row.attributes[c] if isinstance(row.attributes[c], str)
                         else "x"  # Dummy value to be replaced during row update API calls.
                         for c in column_headers)
