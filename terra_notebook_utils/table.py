@@ -154,7 +154,7 @@ class Writer(_AsyncContextManager):
 
 class Deleter(_AsyncContextManager):
     """
-    Distribute row deletes across as few API calls as possible.
+    Distribute row deletes across as few API calls as possible. All references are resolved and deleted.
     """
     def __init__(self,
                  name: str,
@@ -193,6 +193,10 @@ class Deleter(_AsyncContextManager):
         except requests.exceptions.HTTPError as e:
             if 400 == e.response.status_code:
                 pass
+            elif 409 == e.response.status_code:
+                conflict_ents = [ent for ent in e.response.json()]
+                self._do_fiss_delete(conflict_ents)
+                self._do_fiss_delete(ents)
             else:
                 raise
 

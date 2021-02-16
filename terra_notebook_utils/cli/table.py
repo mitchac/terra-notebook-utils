@@ -58,7 +58,7 @@ def get_row(args: argparse.Namespace):
 })
 def delete_table(args: argparse.Namespace):
     """
-    Get one row
+    Delete a table. All references are resolved and deleted.
     """
     args.workspace, args.workspace_namespace = Config.resolve(args.workspace, args.workspace_namespace)
     tnu_table.delete(args.table, args.workspace, args.workspace_namespace)
@@ -69,7 +69,7 @@ def delete_table(args: argparse.Namespace):
 })
 def delete_row(args: argparse.Namespace):
     """
-    Delete a row
+    Delete a row. References are resolved and deleted.
     """
     args.workspace, args.workspace_namespace = Config.resolve(args.workspace, args.workspace_namespace)
     tnu_table.del_row(args.table, args.row, args.workspace, args.workspace_namespace)
