@@ -71,10 +71,12 @@ def fetch_drs_info(drs_url: str) -> dict:
         'authorization': f"Bearer {access_token}",
         'content-type': "application/json"
     }
+    # drs://dg.712C/57a6f0bb-bc4b-4530-a95e-9c2c3398b618
 
     logger.info(f"Resolving DRS uri '{drs_url}' through '{MARTHA_URL}'.")
 
-    resp = http.post(MARTHA_URL, headers=headers, data=json.dumps(dict(url=drs_url)))
+    json_body = dict(url=drs_url)
+    resp = http.post(MARTHA_URL, headers=headers, json=json_body)
 
     if 200 == resp.status_code:
         resp_data = resp.json()
@@ -100,6 +102,7 @@ def info(drs_url: str) -> dict:
     Return a curated subset of data from `fetch_drs_info`.
     """
     info = resolve_drs_info_for_gs_storage(drs_url)
+    print("DOOM", json.dumps(info, indent=2))
     out = dict(name=info.name, size=info.size, updated=info.updated)
     out['url'] = f"gs://{info.bucket_name}/{info.key}"
     return out
