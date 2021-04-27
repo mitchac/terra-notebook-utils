@@ -19,9 +19,10 @@ from gs_chunked_io import async_collections
 from terra_notebook_utils import (WORKSPACE_GOOGLE_PROJECT, WORKSPACE_BUCKET, WORKSPACE_NAME, MULTIPART_THRESHOLD,
                                   IO_CONCURRENCY, MARTHA_URL)
 from terra_notebook_utils import gs, tar_gz, TERRA_DEPLOYMENT_ENV, _GS_SCHEMA
-from terra_notebook_utils.http import http
+from terra_notebook_utils.http import http_session
 
 
+http = http_session()
 logger = logging.getLogger(__name__)
 
 DRSInfo = namedtuple("DRSInfo", "credentials bucket_name key name size updated")
