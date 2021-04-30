@@ -87,8 +87,8 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                 else:
                     cpus, memory_gb = _parse_machine_type(js_get("jes.machineType", call_metadata))
                     # Assume that Google Lifesciences Pipelines API uses N1 custome machine type
-                    start = datetime.strptime(js_get("start", call_metadata), date_format)
-                    end = datetime.strptime(js_get("end", call_metadata), date_format)
+                    start = datetime.strptime(js_get("executionEvents[?description == 'waiting for quota'].endTime", call_metadata), date_format)
+                    end = datetime.strptime(js_get("executionEvents[?description == 'Worker released'].endTime", call_metadata), date_format)
                     runtime = (end - start).total_seconds()
                     preemptible = bool(int(js_get("runtimeAttributes.preemptible", call_metadata)))
                     disk_description = js_get("runtimeAttributes.disks", call_metadata, default="")
