@@ -90,9 +90,9 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                     completed = js_get("executionStatus", call_metadata)
                     print(completed)
                     if completed == "Done":
-                        start = datetime.strptime(js_get("executionEvents[?description == 'waiting for quota'].endTime | [0]", call_metadata), date_format)
-                        end = datetime.strptime(js_get("executionEvents[?description == 'Worker released'].endTime | [0]", call_metadata), date_format)
-                        runtime = (end - start).total_seconds()
+                        instance_start = datetime.strptime(js_get("executionEvents[?description == 'waiting for quota'].endTime | [0]", call_metadata), date_format)
+                        instance_end = datetime.strptime(js_get("executionEvents[?description == 'Worker released'].endTime | [0]", call_metadata), date_format)
+                        runtime = (instance_end - instance_start).total_seconds()
                     else:
                         start = 0
                         end = 0 
