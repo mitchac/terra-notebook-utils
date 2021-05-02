@@ -110,8 +110,9 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                            number_of_cpus=cpus,
                            memory=memory_gb,
                            disk=disk_size_gb,
-                           start=start,
-                           end=end, 
+                           completed=completed,
+                           #start=start,
+                           #end=end, 
                            duration=runtime,
                            call_cached=call_cached)
             except (KeyError, TNUCostException) as exc:
