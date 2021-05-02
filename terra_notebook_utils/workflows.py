@@ -94,8 +94,8 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                         instance_end = datetime.strptime(js_get("executionEvents[?description == 'Worker released'].endTime | [0]", call_metadata), date_format)
                         runtime = (instance_end - instance_start).total_seconds()
                     else:
-                        start = 0
-                        end = 0 
+                        instance_start = 0
+                        instance_end = 0 
                         runtime = 0
                     preemptible = bool(int(js_get("runtimeAttributes.preemptible", call_metadata)))
                     disk_description = js_get("runtimeAttributes.disks", call_metadata, default="")
@@ -111,8 +111,9 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                            number_of_cpus=cpus,
                            memory=memory_gb,
                            disk=disk_size_gb,
-                           start=instance_start,
-                           end=instance_end,
+                           completed=completed,
+                           instance_start=instance_start,
+                           instance_end=instance_end,
                            duration=runtime,
                            call_cached=call_cached)
             except (KeyError, TNUCostException) as exc:
