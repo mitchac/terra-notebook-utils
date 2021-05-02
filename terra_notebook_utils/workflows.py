@@ -89,7 +89,7 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                     # Assume that Google Lifesciences Pipelines API uses N1 custome machine type
                     completed = js_get("executionStatus", call_metadata)
                     print(completed)
-                    if completed != "Done":
+                    if completed == "Done":
                         start = datetime.strptime(js_get("executionEvents[?description == 'waiting for quota'].endTime | [0]", call_metadata), date_format)
                         end = datetime.strptime(js_get("executionEvents[?description == 'Worker released'].endTime | [0]", call_metadata), date_format)
                         runtime = (end - start).total_seconds()
@@ -111,9 +111,6 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                            number_of_cpus=cpus,
                            memory=memory_gb,
                            disk=disk_size_gb,
-                           completed=completed,
-                           #start=start,
-                           #end=end, 
                            duration=runtime,
                            call_cached=call_cached)
             except (KeyError, TNUCostException) as exc:
