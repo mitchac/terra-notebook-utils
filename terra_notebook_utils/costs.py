@@ -16,6 +16,8 @@ class PersistentDisk:
 
     @classmethod
     def estimate(cls, size_gb: float, runtime_seconds: float) -> float:
+        print(runtime_seconds)
+        print(size_gb)
         return cls.standard * size_gb * runtime_seconds
 
 class GCPCustomN1Cost:
