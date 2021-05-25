@@ -92,7 +92,7 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                         instance_start = datetime.strptime(js_get("executionEvents[?contains(description,'assigned')].startTime | [0]", call_metadata), date_format)
                         instance_end = datetime.strptime(js_get("executionEvents[?description == 'Worker released'].endTime | [0]", call_metadata), date_format)
                         runtime = (instance_end - instance_start).total_seconds()
-                    elif completed == "RetryableFailure":
+                    elif completed == "RetryableFailure" or completed == "Failed":
                         instance_start = datetime.strptime(js_get("executionEvents[?description == 'RunningJob'].startTime | [0]", call_metadata), date_format)
                         instance_end = datetime.strptime(js_get("executionEvents[?description == 'RunningJob'].endTime | [0]", call_metadata), date_format)
                         runtime = (instance_end - instance_start).total_seconds()
