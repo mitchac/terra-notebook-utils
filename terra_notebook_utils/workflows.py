@@ -102,7 +102,6 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                         runtime = 0
                     preemptible = bool(int(js_get("runtimeAttributes.preemptible", call_metadata)))
                     disk_description = js_get("runtimeAttributes.disks", call_metadata, default="")
-                    print(disk_description)
                     if disk_description.startswith("local-disk"):
                         _, size_gb, _ = disk_description.split()
                         disk_size_gb = float(size_gb)
