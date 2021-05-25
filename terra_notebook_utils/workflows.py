@@ -88,7 +88,6 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                     cpus, memory_gb = _parse_machine_type(js_get("jes.machineType", call_metadata))
                     # Assume that Google Lifesciences Pipelines API uses N1 custome machine type
                     completed = js_get("executionStatus", call_metadata)
-                    print(completed)
                     if completed == "Done":
                         instance_start = datetime.strptime(js_get("executionEvents[?contains(description,'assigned')].startTime | [0]", call_metadata), date_format)
                         instance_end = datetime.strptime(js_get("executionEvents[?description == 'Worker released'].endTime | [0]", call_metadata), date_format)
@@ -97,8 +96,6 @@ def estimate_workflow_cost(workflow_id: str, workflow_metadata: dict) -> Generat
                         instance_start = 0
                         instance_end = 0 
                         runtime = 0
-                    print(instance_start)
-                    print(instance_end)
                     preemptible = bool(int(js_get("runtimeAttributes.preemptible", call_metadata)))
                     disk_description = js_get("runtimeAttributes.disks", call_metadata, default="")
                     if disk_description.startswith("local-disk"):
